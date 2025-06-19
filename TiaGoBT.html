@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>TiaGo++ BT - David Romero Yánez</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">David Romero Yánez</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li class="active"><a href="TiaGoBT.html">Tiago++</a></li>
+                            <li><a href="Resume.html">Resume</a></li>
+                            <li><a href="AboutMe.html">About Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="mailto:daroyane@espol.edu.ec" class="icon web application fa-envelope"><span class="label">Email</span></a></li>
+							<li><a href="https://linkedin.com/in/daroyane" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/davidromeroy" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>TiaGo++: <a href="https://github.com/davidromeroy/#">robot mobile with behavior trees</a></h1>
+                                    <!-- <i>Note: All the videos shown have been sped upto 3 times its original speed.</i> -->
+								</header>
+								<!-- TODO: agregar imagenes/Videos-->
+                  <video width="100%" height="100%" autoplay loop muted>
+                      <source src="images/Sequence1_1.mp4" type="video/mp4">
+                      <source src="Sequence1_1.ogg" type="video/ogg">
+                    </video>
+                  <div class="box alt"></div>
+								<header>
+										<h2>Overview</h2>
+									</header>
+									<!-- TODO: con mi info -->
+									<p>The TiaGo++ package enables the 4 fingered Wonick robotics’ Allegro hand to mirror the finger movement of an actual hand, where the thumb, index, middle and ring fingers are represented by the 4 fingers on the robot while the pinky finger is simply ignored in our case.</p>
+                                    <p> This package has 2 modes, in one the robot hand is capable of mimicking gross finger movement while the other mode allows for the recognition of 7 types of hand gestures which are useful for carrying out finer motor skills related tasking like grasping motions. In order to perform these tasks the package utilizes a RGB camera to observe the human hand movements which is tracked using mediapipe’s machine learning framework to either calculate the joint states directly or use a hand gesture recognition package to obtain pre-defined joint angles. These 16 joint angles are fed to the Moveit! planner to plan and execute valid finger trajectories. </p>
+									<hr />
+
+								<!-- Lists -->
+									<h2>Workflow</h2>
+                                    <a href="#" class="image fit"><img src="images/FlowchartCopyCat.jpg" alt="" /></a>
+									<div class="row">
+										<div class="col-6 col-12-small">
+                                            <p>The flow chart above illustrates the order in which the nodes are being implemented. The entire process can be divided into 2 sections, one is the human finger state estimation and the other is the motion planning and control.</p>
+                                            <p>The estimatimation the individual finger joint angles from the visual feedback ocan be done in 2 ways. One is using the finger tracking package, the other is by employing the gesture recognition package. The joint angles are used by the move group node to plan a path or a trajectory of the fingers and subsequently execute this path with the help of ros controllers. After execution, the joint states of the hand updates, this is used by the actual robot hand to move to that specific configuration.</p>
+                                            <!-- <p>Checkout this a github <a href="https://github.com/davidromeroy/HockeyBot/tree/main/moveit_helper">link</a> to the helper package for further details.</p> -->
+                                        </div>
+                                        <div class="col-6 col-12-small">
+                                            <a href="#" class="image fit"><img src="images/Workflow.png" alt="" /></a>
+                                        </div>
+                                    </div>
+									<hr />
+									<h2>Finger Tracking</h2>
+									<div class="col">
+                                        <div class="row-6 row-12-small">
+                                            <a href="#" class="image fit"><img src="images/Landmoark_mediapipe.JPG" alt="" /></a>
+                                        </div>
+										<div class="row-6 row-12-small">
+                                            <p>Finger_tracking is a ROS 2 python node which uses mediapipe’s hand recognition framework to calculate each of the joint angles of the hand configuration by mapping each joint position to x, y, z in 3D space as shown in the figure above. After applying some simple geometry the angles obtained are retargeted to the 16 robot joints and mapped according to the joint limits. These angles are then published for the motion control section of the process. </p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <h2>Hand Gesture recognition</h2>
+									<div class="row">
+										<div class="col-6 col-12-small">
+                                            <p>The mediapipe's gesture recognition repository was re-trained for the gestures relating to grasping hand motions to the desired robot hand configuration. For this purpose 2 ROS python nodes were employed, where the ros2_hgr node estimates the gesture for a give hand pose and publishes an id corresponding to that gesture. The other node gets the id and relates it to previously tested and defined hand configuration.</p>
+                                            <p>This fork was trained for 7 gestures namely, open, close, pinching with index and middle finger, grasping with 3 fingers and 4 fingers and pointing with the index finger.</p>
+                                        </div>
+                                        <div class="col-6 col-12-small">
+                                            <a href="#" class="image fit">
+                                              <video width="100%" height="80%" autoplay loop muted>
+                                                <source src="images/gestures.mp4" type="video/mp4">
+                                                <source src="gestures.ogg" type="video/ogg">
+                                              </video></a>
+                                        </div>
+                                        <div class="row gtr-50 gtr-uniform">
+                                            <div class="col-4"><span class="image fit">
+                                              <video width="100%" height="100%" autoplay loop muted>
+                                                <source src="images/Open.mp4" type="video/mp4">
+                                                <source src="Open.ogg" type="video/ogg">
+                                              </video>
+                                            </span></div>
+                                            <div class="col-4"><span class="image fit">
+                                                <video width="100%" height="100%" autoplay loop muted>
+                                                  <source src="images/pinchit.mp4" type="video/mp4">
+                                                  <source src="pinchit.ogg" type="video/ogg">
+                                                </video>
+                                              </span></div>
+                                              <div class="col-4"><span class="image fit">
+                                                <video width="100%" height="100%" autoplay loop muted>
+                                                  <source src="images/3grasp (1).mp4" type="video/mp4">
+                                                  <source src="3grasp.ogg" type="video/ogg">
+                                                </video>
+                                              </span></div>
+                                            <!-- Break -->
+                                            <div class="col-4"><span class="image fit">
+                                                <video width="100%" height="100%" autoplay loop muted>
+                                                  <source src="images/Close.mp4" type="video/mp4">
+                                                  <source src="Close.ogg" type="video/ogg">
+                                                </video>
+                                              </span></div>
+                                              <div class="col-4"><span class="image fit">
+                                                <video width="100%" height="100%" autoplay loop muted>
+                                                  <source src="images/PinchMiddle.mp4" type="video/mp4">
+                                                  <source src="PinchMiddle.ogg" type="video/ogg">
+                                                </video>
+                                              </span></div>
+                                              <div class="col-4"><span class="image fit">
+                                                <video width="100%" height="100%" autoplay loop muted>
+                                                  <source src="images/4grasp.mp4" type="video/mp4">
+                                                  <source src="4grasp.ogg" type="video/ogg">
+                                                </video>
+                                              </span></div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <h2>Motion Control: Moveit Config</h2>
+									<div class="col">
+                                        <div class="row-6 row-12-small">
+                                            <a href="#" class="image fit">
+                                              <video width="100%" height="100%" autoplay loop muted>
+                                                <source src="images/Sequence4.mp4" type="video/mp4">
+                                                <source src="Sequence4.ogg" type="video/ogg">
+                                              </video></a>
+                                        </div>
+										<div class="row-6 row-12-small">
+                                            <p> Allegro_lib is a C++ library compiled to allow the use of Allegro Hand in ROS 2. The allegro_driver uses this library to control the robot hand PD controller and send joint angles for each of the angles. In order to get proper waypoints for a desired trajectory to be executed keeping self collision and joint limits in mind, I configure the Allegro Hand with Moveit!. This allowed for visualization of the resulting joint trajectories and the use of ros controller to calculate the closest viable solutuion to joint angles received from the perception nodes.</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+									<h2>Integration & Testing</h2>
+									<dl>
+									  <dt>Mirroring Hand Configuration:</dt>
+                                        <div class="row">
+                                            <div class="col-6 col-12-small">
+                                                <a href="#" class="image fit">
+                                                  <video width="100%" height="100%" autoplay loop muted>
+                                                    <source src="images/Sequence1_1.mp4" type="video/mp4">
+                                                    <source src="Sequence1_1.ogg" type="video/ogg">
+                                                  </video></a>
+                                                  <!-- <div class="video-container">
+                                                    <iframe width="100%" height="328" src="https://www.youtube.com/embed/wFPPJUybkIA?autoplay=1&controls=1&mute=1&loop=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                  </div></a> -->
+                                            </div>
+                                            <div class="col-6 col-12-small">
+                                                <a href="#" class="image fit">
+                                                  <video width="100%" height="100%" autoplay loop muted>
+                                                    <source src="images/sequence1.1.mp4" type="video/mp4">
+                                                    <source src="sequence1.1.ogg" type="video/ogg">
+                                                  </video></a>
+                                            </div>
+                                        </div>
+											<p>Several iterations of testing was required to correctly map real hand joints to the robot joints. As shown in the clips, the robot mirrors the finger movements of the real hand, however this implementation has its limitations, right now it is only accurate for big movements of the fingers. It is capable of following finer motion of the finger however the accuarcy drops the more complicated the motions become.</p>
+										<dt>Grasping Gestures:</dt>
+                                            <video width="100%" height="100%" autoplay loop muted>
+                                                <source src="images/Sequence2.mp4" type="video/mp4">
+                                                <source src="Sequence2.ogg" type="video/ogg">
+                                            </video>
+                                              <div class="row">
+                                                <div class="col-6 col-12-small">
+                                                    <video width="100%" height="100%" autoplay loop muted>
+                                                        <source src="images/Sequence3(1).mp4" type="video/mp4">
+                                                        <source src="Sequence3(1).ogg" type="video/ogg">
+                                                    </video>
+                                                </div>
+                                                <div class="col-6 col-12-small">
+                                                    <p>The gesture recognition algorithm is quite robust, allowing for much more complicated hand configurations to be detected correctly. Since the robot configuration for a particular gesture is set by me, it is capable of carrying out finer motion control. This allows it tho grab objects as small as a pen and as large as a water bottle.</p>
+                                                </div>
+                                            </div>
+									</dl>
+
+                                    <h3>Know more about this project at <a href="https://github.com/davidromeroy/#">this github link.</a></h3>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

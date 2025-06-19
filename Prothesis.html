@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Prothesis - David Romero Yánez</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">David Romero Yánez</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li class="active"><a href="Prothesis.html">Prothesis</a></li>
+                            <li><a href="Resume.html">Resume</a></li>
+                            <li><a href="AboutMe.html">About Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="mailto:daroyane@espol.edu.ec" class="icon web application fa-envelope"><span class="label">Email</span></a></li>
+							<li><a href="https://linkedin.com/in/daroyane" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/davidromeroy" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1><a href="https://github.com/davidromeroy#">Prothesis for children</a></h1>
+								</header>
+                                <span class="image main"><img src="images/prothesis_video.mp4" alt="" /></span>
+                                <!-- <video width="100%" height="100%" autoplay loop muted>
+                                    <source src="images/MotionProthesis.mp4" type="video/mp4">
+                                    <source src="prothesis_video.ogg" type="video/ogg">
+                                  </video> -->
+                                <div class="box alt"></div>
+									<header>
+										<h2>Overview</h2>
+									</header>
+                                    <!-- TODO: Editar con mi info -->
+									<p>My team and I developed a desigen of a Bionic Prothesis. An Intel RealSense D435i camera and computer vision was used to track the puck sliding on the air hockey table. The trajectory of the puck was predicted using the tracked positions of the puck,after sending the expected position to our SimpleMove API, which tells the arm to move to meet the puck. All of these tasks are integrated in a main node, this completes our workflow and allows the robot to play constantly. </p>
+									<hr />
+
+								<!-- Lists -->
+									<h2>SimpleMove API</h2>
+									<div class="row">
+										<div class="col-6 col-12-small">
+                                            <p>The SimpleMove API is a ROS2 python package that is a motion planning interface capable of planning and executing of paths using the MoveIt! move group node. A service can be called to set a desired position and the API will plan  the path of the Franka end effector, another service can be called to execution the motion depending on whether the given position is valid. It also had the ability to plan the trajectory in the cartesian plane and add collison objects in the environment.</p>
+                                            <p>Checkout this a github <a href="https://github.com/GhoshRitika/HockeyBot/tree/main/moveit_helper">link</a> to the helper package for further details.</p>
+                                        </div>
+                                        <div class="col-6 col-12-small">
+                                            <a href="#" class="image fit"><img src="images/SimpleMove.gif" alt="" /></a>
+                                        </div>
+                                    </div>
+									<hr />
+									<h2>Perception</h2>
+									<div class="row">
+                                        <div class="col-6 col-12-small">
+                                            <a href="#" class="image fit"><img src="images/PuckTracking.gif" alt="" /></a>
+                                        </div>
+										<div class="col-6 col-12-small">
+                                            <p>The RealSense IR camera is used for this project to track the puck at 90 fps. OpenCV is implemented to detect circles within given range of radius and continuously collect the position of its center. To account for faulty values and noise while detecting the circle, a best fit line is calculated and values that are not within tolerance distance from the line are removed. Only the positions that are collected when the puck is moving halfway towards the robot are then sent for their trajectory calculation.</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <h2>Trajectory Calculation</h2>
+									<div class="row">
+										<div class="col-6 col-12-small">
+                                            <p>The positions from the RealSense is processed and the expected trajectory of the puck is calculated by applying simple straight line geometry. Given the parameters of the airhockey table the collision of the puck against the sides is considered by taking a its reflection abouth the angle of impact</p>
+                                        </div>
+                                        <div class="col-6 col-12-small">
+                                            <a href="#" class="image fit"><img src="images/TrajCalLegend.png" alt="" /></a>
+                                        </div>
+                                    </div>
+                                    <hr />
+									<h2>Integration & Testing</h2>
+									<dl>
+										<dt>Initial Sequence and Return Home:</dt>
+                                            <a href="#" class="image right"><img src="images/InitSeq.gif" alt="" /></a>
+											<p>The Franka arm follows a start up sequence when the program is started. It goes to a designated homepositions, graps the paddle and starts hitting the puck placed infront. It is also made to return to its home position everytime it moves to hit the puck. in case there is a position the arm can not reach in order to hit the puck, it remains in the home position to defend its goal.</p>
+
+										<dt>Puck blocking and hitting:</dt>
+											<p>The arm end effector moves to its desired goal position by following waypoints which mimic the trajectory of the incoming puck. By following this path, the end effector holding the paddle eventually encounters the puck hitting it back to its opponent.</p>
+                                            <video width="100%" height="100%" autoplay loop muted>
+                                                <source src="images/Integration_HockeyBot.mp4" type="video/mp4">
+                                                <source src="Integration_HockeyBot.ogg" type="video/ogg">
+                                              </video>
+									</dl>
+
+                                    <h3>My Teammates:</h3>
+                                    <ul>
+                                        <li>Djalmar Vargas</li>
+                                        <li>Milton Sánchez</li>
+                                    </ul>
+                                    <!-- TODO: Poner link al repositorio -->
+                                    <h3>Know more about this project at <a href="https://github.com/davidromeroy/#">this github link.</a></h3>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
